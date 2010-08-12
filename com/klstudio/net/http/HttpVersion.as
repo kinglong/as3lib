@@ -1,4 +1,5 @@
 package com.klstudio.net.http {
+	import com.klstudio.utils.StringUtil;
 
 	/**
 	 * The version of HTTP or its derived protocols
@@ -20,11 +21,11 @@ package com.klstudio.net.http {
 
 		public static function valueOf(text : String) : HttpVersion {
 			if(text == null) {
-				throw new Error("text is null!");
+				throw new ArgumentError("text is null!");
 			}
-			text = trim(text);
+			text = StringUtil.trim(text);
 			if(text.length == 0) {
-				throw new  Error("text is empty!");
+				throw new  VerifyError("text is empty!");
 			}
 			switch(text.toUpperCase()) {
 				case "HTTP/1.1":
@@ -34,19 +35,12 @@ package com.klstudio.net.http {
 				default:					
 					var arr : Array = text.match(VERSION_PATTERN);
 					if(arr == null) {
-						throw new Error("invalid version format:" + text);
+						throw new VerifyError("invalid version format:" + text);
 					}
 					return 	new HttpVersion(arr[1], uint(arr[2]), uint(arr[3]));
 			}
 		}
-
-		public static function trim(str : String) : String {
-			if(str == null && str.length == 0) {
-				return str;
-			}
-			return str.replace(/(^\s*)|(\s*$)/g, "");   
-		}
-
+		
 		private var _protocolName : String;
 		private var _majorVersion : uint;
 		private var _minorVersion : uint;
@@ -54,16 +48,16 @@ package com.klstudio.net.http {
 
 		public function HttpVersion(protocolName : String,majorVersion : uint,minorVersion : uint) {
 			if(protocolName == null) {
-				throw new Error("protocolName is null!");
+				throw new ArgumentError("protocolName is null!");
 			}
-			protocolName = trim(protocolName).toUpperCase();			
+			protocolName = StringUtil.trim(protocolName).toUpperCase();			
 			if(protocolName.length == 0) {
-				throw new Error("protocolName is empty!");
+				throw new VerifyError("protocolName is empty!");
 			}
 			for(var i : uint = 0;i < protocolName.length;i++) {
 				var n : Number = protocolName.charCodeAt(i);
 				if(n > 127) {
-					throw new Error("protocolName contains non-ascii character: " + protocolName);
+					throw new VerifyError("protocolName contains non-ascii character: " + protocolName);
 				}
 				switch(n) {
 					case 0x3d: 	//'='
@@ -77,7 +71,7 @@ package com.klstudio.net.http {
 					case 0x0c: 	//'\f'
 					case 0x0b: 	
 						//Vertical tab
-						throw new Error("protocolName contains one of the following prohibited characters: " + "=,;: \\t\\r\\n\\v\\f: " + protocolName);
+						throw new VerifyError("protocolName contains one of the following prohibited characters: " + "=,;: \\t\\r\\n\\v\\f: " + protocolName);
 				}
 			}	
 			_protocolName = protocolName;		

@@ -7,6 +7,6 @@ package com.klstudio.net.http {
 	 * @since:2010-8-6
 	 */
 	public interface IHttpResponse extends IHttpMessage {
-		function getStatus():HttpResponseStatus;
+		function get status():HttpResponseStatus;
 	}
 }

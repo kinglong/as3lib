@@ -1,4 +1,5 @@
 package com.klstudio.net.http {
+	import flash.utils.ByteArray;
 
 	/**
 	 * An HTTP message
@@ -44,13 +45,13 @@ package com.klstudio.net.http {
 		 * Returns the content of this message.  If there is no content, an
 		 * {@link ChannelBuffers#EMPTY_BUFFER} is returned.
 		 */
-		function getContent() : *;
+		function getContent() : ByteArray;
 
 		/**
 		 * Sets the content of this message.  If {@code null} is specified,
 		 * the content of this message will be set to {@link ChannelBuffers#EMPTY_BUFFER}.
 		 */
-		function setContent(content : *) : void;
+		function setContent(content : ByteArray) : void;
 
 		/**
 		 * Adds a new header with the specified name and value.

@@ -1,4 +1,5 @@
 package com.klstudio.net.http {
+	import flash.utils.ByteArray;
 	import com.klstudio.net.http.IHttpMessage;
 
 	/**
@@ -10,11 +11,15 @@ package com.klstudio.net.http {
 		/**
 		 * Returns the method of this request.
 		 */
-		function getMethod() : HttpMethod;
-
+		function get method() : HttpMethod;
+		
 		/**
 		 * Returns the URI (or path) of this request.
 		 */
-		function getUri() : String;
+		function get uri() : String;
+		
+		function set uri(value:String):void;
+		
+		function get headBytes():ByteArray;
 	}
 }

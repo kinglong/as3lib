@@ -10,12 +10,12 @@ package com.klstudio.net.http {
 	public class HttpMessage implements IHttpMessage {
 		private static function validateHeaderName(name : String) : void {
 			if(name == null) {
-				throw new Error("name is null!");
+				throw new ArgumentError("name is null!");
 			}
 			for(var i : uint = 0;i < name.length;i++) {
 				var n : Number = name.charCodeAt(i);
 				if(n > 127) {
-					throw new Error("name contains non-ascii character: " + name);
+					throw new VerifyError("name contains non-ascii character: " + name);
 				}
 				switch(n) {
 					case 0x3d: 	//'='
@@ -29,14 +29,14 @@ package com.klstudio.net.http {
 					case 0x0c: 	//'\f'
 					case 0x0b: 	
 						//Vertical tab
-						throw new Error("name contains one of the following prohibited characters: " + "=,;: \\t\\r\\n\\v\\f: " + name);
+						throw new VerifyError("name contains one of the following prohibited characters: " + "=,;: \\t\\r\\n\\v\\f: " + name);
 				}
 			}
 		}
 
 		private static function validateHeaderValue(value : String) : void {
 			if(value == null) {
-				throw new Error("value is null!");
+				throw new ArgumentError("value is null!");
 			}
 			for(var i : uint = 0;i < value.length;i++) {
 				var n : Number = value.charCodeAt(i);
@@ -46,7 +46,7 @@ package com.klstudio.net.http {
 					case 0x0c: 	//'\f'
 					case 0x0b: 	
 						//Vertical tab
-						throw new Error("value contains one of the following prohibited characters: " + "\\r\\n\\v\\f: " + value);
+						throw new VerifyError("value contains one of the following prohibited characters: " + "\\r\\n\\v\\f: " + value);
 				}
 			}
 		}
@@ -55,9 +55,9 @@ package com.klstudio.net.http {
 		private var _headers : Dictionary = new Dictionary(true);
 		private var _content : ByteArray;
 
-		protected function HttpMessage(version : HttpVersion) {
+		public function HttpMessage(version : HttpVersion) {
 			if(version == null) {
-				throw new Error("version is null!");
+				throw new ArgumentError("version is null!");
 			}
 			_version = version;
 		}
@@ -76,7 +76,7 @@ package com.klstudio.net.http {
 		public function setHeader(name : String,value : *) : void {
 			validateHeaderName(name);
 			if(value == null) {
-				throw new Error("value is null!");
+				throw new ArgumentError("value is null!");
 			}
 			var values : Array = new Array();
 			if(value is Array) {
@@ -87,13 +87,13 @@ package com.klstudio.net.http {
 					c++;
 				}
 				if(c == 0) {
-					throw new Error("[Array]value is empty!");
+					throw new VerifyError("[Array]value is empty!");
 				}
 			}else if(value is String || value is Number || value is int || value is uint) {
 				validateHeaderValue(value + "");
 				values.push(value + "");
 			} else {
-				throw new Error("invalid value format:" + typeof(value));
+				throw new VerifyError("invalid value format:" + typeof(value));
 			}
 			_headers[name] = values;
 		}
@@ -181,11 +181,11 @@ package com.klstudio.net.http {
 			return true;
 		}
 
-		public function getContent() : * {
+		public function getContent() : ByteArray {
 			return _content;
 		}
 
-		public function setContent(content : *) : void {
+		public function setContent(content : ByteArray) : void {
 			_content = content;
 		}		
 	}

@@ -1,4 +1,5 @@
 package com.klstudio.net.http {
+	import com.klstudio.utils.StringUtil;
 
 	/**
 	 * The request method of HTTP or its derived protocols
@@ -57,16 +58,16 @@ package com.klstudio.net.http {
 
 		public function HttpMethod(name : String) {
 			if(name == null) {
-				new Error("name is null!");
+				new ArgumentError("name is null!");
 			}
-			name = HttpVersion.trim(name).toUpperCase();
+			name = StringUtil.trim(name).toUpperCase();
 			if(name.length == 0) {
-				new Error("name is empty!");
+				new VerifyError("name is empty!");
 			}
 			for(var i : uint = 0;i < name.length;i++) {
 				var n : Number = name.charCodeAt(i);
 				if(n > 127) {
-					throw new Error("name contains non-ascii character: " + name);
+					throw new VerifyError("name contains non-ascii character: " + name);
 				}
 				switch(n) {
 					case 0x3d: 	//'='
@@ -80,7 +81,7 @@ package com.klstudio.net.http {
 					case 0x0c: 	//'\f'
 					case 0x0b: 	
 						//Vertical tab
-						throw new Error("name contains one of the following prohibited characters: " + "=,;: \\t\\r\\n\\v\\f: " + name);
+						throw new VerifyError("name contains one of the following prohibited characters: " + "=,;: \\t\\r\\n\\v\\f: " + name);
 				}
 			}
 			_name = name;
@@ -88,6 +89,38 @@ package com.klstudio.net.http {
 
 		public function get name() : String {
 			return _name;
+		}
+		
+		public function get hasRequestBody():Boolean{
+			switch(name){
+				case POST.name:	
+				case PUT.name:	
+				case CONNECT.name:
+				case OPTIONS.name:
+				case TRACE.name:							
+					return true;
+				default:
+					return false; 
+			}
+		}
+		
+		public function get hasResponseBody():Boolean{
+			switch(name){
+				case GET.name:
+				case POST.name:	
+				case PUT.name:
+				case DELETE.name:
+				case CONNECT.name:
+				case OPTIONS.name:
+				case TRACE.name:								
+					return true;
+				default:
+					return false; 
+			}
+		}
+
+		public function toString() : String {
+			return name;
 		}
 
 		public function equals(o : *) : Boolean {
