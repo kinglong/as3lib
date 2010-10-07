@@ -55,6 +55,7 @@ package com.klstudio.datas {
 		public function remove(key : *) : * {
 			var result : * = null;
 			if(containsKey(key)) {
+				result = _props[key];
 				delete _props[key];
 				var index : int = _keys.indexOf(key);
 				if(index != -1) {
