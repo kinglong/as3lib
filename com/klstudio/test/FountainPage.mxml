@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	applicationComplete="initApp();">
+	<mx:Script>
+		<![CDATA[
+			import flash.display.Shape;
+			import flash.display.Sprite;
+
+			private var fountain : Fountain;
+
+			private function initApp() : void {
+				var sp : Sprite = new Sprite();
+				canvas.rawChildren.addChild(sp);
+				fountain = new Fountain(canvas.width, canvas.height);
+				var mask : Shape = new Shape();
+				mask.graphics.beginFill(0xFF0000);
+				mask.graphics.drawRect(0, 0, canvas.width, canvas.height);
+				mask.graphics.endFill();
+				sp.addChild(mask);
+				sp.addChild(fountain);
+				fountain.mask = mask;
+
+				gs.value = fountain.gravity;
+				ws.value = fountain.wind;
+			}
+
+			private function changeParams() : void {
+				fountain.gravity = gs.value;
+				fountain.wind = ws.value;
+			}
+		]]>
+	</mx:Script>
+	<mx:ApplicationControlBar dock="true" paddingTop="0"
+		paddingBottom="0">
+		<mx:Label text="Kinglong'Blog"/>
+	</mx:ApplicationControlBar>
+	<mx:Panel title="喷泉演示-测试重力和风力调节">
+		<mx:Canvas width="450" height="250" id="canvas"
+			backgroundColor="#FFFFFF"/>
+		<mx:ControlBar>
+			<mx:Label color="blue" text="重力："/>
+			<mx:HSlider id="gs" minimum="0" maximum="2" tickColor="black"
+				snapInterval="0.01" tickInterval="0.1"
+				allowTrackClick="true" liveDragging="true" change="changeParams();"/>
+			<mx:Label color="blue" text="风力："/>
+			<mx:HSlider id="ws" minimum="-1" maximum="1" tickColor="black"
+				snapInterval="0.01" tickInterval="0.1"
+				allowTrackClick="true" liveDragging="true" change="changeParams();"/>
+		</mx:ControlBar>
+	</mx:Panel>
+</mx:Application>
