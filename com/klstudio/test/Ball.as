@@ -1,12 +1,12 @@
 package com.klstudio.test {
-	import flash.display.Shape;
+	import flash.display.Sprite;
 
 	/**
 	 * Ball
 	 * @author Kinglong(kinglong@gmail.com)
 	 * @since:2010-11-25
 	 */
-	public class Ball extends Shape {
+	public class Ball extends Sprite {
 		/**
 		 * X坐标上的加速度;
 		 */
@@ -20,7 +20,7 @@ package com.klstudio.test {
 		 */
 		public var radius : Number;
 
-		public function Ball(radius : Number = 10, color : uint = 0xFF0000) {
+		public function Ball(radius : Number = 40, color : uint = 0xFF0000) {
 			vx = 0;
 			vy = 0;
 			this.radius = radius;

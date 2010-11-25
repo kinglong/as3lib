@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	applicationComplete="initApp();">
+	<mx:Script>
+		<![CDATA[
+			import flash.display.Shape;
+			import flash.display.Sprite;
+
+			private var impl : Throwing;
+
+			private function initApp() : void {
+				var sp : Sprite = new Sprite();
+				canvas.rawChildren.addChild(sp);
+				impl = new Throwing(canvas.width, canvas.height);
+				var mask : Shape = new Shape();
+				mask.graphics.beginFill(0xFF0000);
+				mask.graphics.drawRect(0, 0, canvas.width, canvas.height);
+				mask.graphics.endFill();
+				sp.addChild(mask);
+				sp.addChild(impl);
+				impl.mask = mask;
+
+				gs.value = impl.gravity;
+				bs.value = impl.bounce;
+			}
+
+			private function changeParams() : void {
+				impl.gravity = gs.value;
+				impl.bounce = bs.value;
+			}
+		]]>
+	</mx:Script>
+	<mx:ApplicationControlBar dock="true" paddingTop="0"
+		paddingBottom="0">
+		<mx:Label text="Kinglong'Blog"/>
+	</mx:ApplicationControlBar>
+	<mx:Panel title="投掷运动演示-测试重力和反弹力调节（用鼠标控制做投掷运动）">
+		<mx:Canvas width="450" height="250" id="canvas"
+			backgroundColor="#FFFFFF"/>
+		<mx:ControlBar>
+			<mx:Label color="blue" text="重力："/>
+			<mx:HSlider id="gs" minimum="0" maximum="2" tickColor="black"
+				snapInterval="0.01" tickInterval="0.1"
+				allowTrackClick="true" liveDragging="true" change="changeParams();"/>
+			<mx:Label color="blue" text="反弹力："/>
+			<mx:HSlider id="bs" minimum="-1" maximum="0" tickColor="black"
+				snapInterval="0.01" tickInterval="0.1"
+				allowTrackClick="true" liveDragging="true" change="changeParams();"/>
+		</mx:ControlBar>
+	</mx:Panel>
+</mx:Application>
