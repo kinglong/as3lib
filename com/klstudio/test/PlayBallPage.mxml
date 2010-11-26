@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	applicationComplete="initApp();">
+	<mx:Script>
+		<![CDATA[
+			import flash.display.Shape;
+			import flash.display.Sprite;
+
+			private var impl : PlayBall;
+
+			private function initApp() : void {
+				var sp : Sprite = new Sprite();
+				canvas.rawChildren.addChild(sp);
+				impl = new PlayBall(canvas.width, canvas.height);
+				var mask : Shape = new Shape();
+				mask.graphics.beginFill(0xFF0000);
+				mask.graphics.drawRect(0, 0, canvas.width, canvas.height);
+				mask.graphics.endFill();
+				sp.addChild(mask);
+				sp.addChild(impl);
+				impl.mask = mask;
+			}
+		]]>
+	</mx:Script>
+	<mx:Panel title="机器人玩球-测试反动力学功能(www.klstudio.com)">
+		<mx:Canvas width="500" height="300" id="canvas"
+			backgroundColor="#FFFFFF"/>
+	</mx:Panel>
+</mx:Application>
