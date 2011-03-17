@@ -1,4 +1,6 @@
 package com.klstudio.test {
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.geom.Point;
 	import flash.events.Event;
 	import flash.filters.GlowFilter;
@@ -25,6 +27,8 @@ package com.klstudio.test {
 		}
 
 		private function addStageHandler(event : Event = null) : void {
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 			removeEventListener(Event.ADDED_TO_STAGE, addStageHandler);
 			addEventListener(Event.REMOVED_FROM_STAGE, removeStageHandler);
 			update();
