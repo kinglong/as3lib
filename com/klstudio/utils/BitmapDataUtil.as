@@ -51,28 +51,28 @@ package com.klstudio.utils {
 		/**
 		 * 获取位图区域数组(0为障碍 1为通路)
 		 * @param bitmapData 位图
-		 * @param box 方格大小
+		 * @param cellSize 方格大小
 		 * @return 区域数组
 		 */
-		public static function getImageMapVector(bitmapData : BitmapData, box : uint = 8) : Vector.<Vector.<int>> {
+		public static function getImageMapVector(bitmapData : BitmapData, cellSize : uint = 8) : Vector.<Vector.<int>> {
 			if (bitmapData == null || !bitmapData.transparent ) {
 				throw new Error("bitmapData值无效");
 			}
-			if (box < 4) {
-				box = 4;
-			} else if (box > 50) {
-				box = 50;
+			if (cellSize < 4) {
+				cellSize = 4;
+			} else if (cellSize > 50) {
+				cellSize = 50;
 			}
 			var rect : Rectangle = BitmapDataUtil.getRealImageRect(bitmapData);
-			var maxX : int = Math.ceil(rect.right / box);
-			var maxY : int = Math.ceil(Math.ceil(rect.bottom / box));
-			var startX : int = Math.floor(rect.left / box);
-			var startY : int = Math.floor(rect.top / box);
+			var maxX : int = Math.ceil(rect.right / cellSize);
+			var maxY : int = Math.ceil(Math.ceil(rect.bottom / cellSize));
+			var startX : int = Math.floor(rect.left / cellSize);
+			var startY : int = Math.floor(rect.top / cellSize);
 			var map : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(maxX);
 			var x : int;
 			var y : int;
-			var checkRect : Rectangle = new Rectangle(0, 0, box, box);
-			var checkBmd : BitmapData = new BitmapData(box, box, true, 0);
+			var checkRect : Rectangle = new Rectangle(0, 0, cellSize, cellSize);
+			var checkBmd : BitmapData = new BitmapData(cellSize, cellSize, true, 0);
 			var point : Point = new Point();
 			for ( x = 0; x < startX; x++) {
 				map[x] = new Vector.<int>(maxY);
@@ -80,14 +80,18 @@ package com.klstudio.utils {
 			for (x = startX; x < maxX; x++) {
 				map[x] = new Vector.<int>(maxY);
 				for (y = startY; y < maxY; y++) {
-					checkRect.x = x * box;
-					checkRect.y = y * box;
+					checkRect.x = x * cellSize;
+					checkRect.y = y * cellSize;
 					checkBmd.copyPixels(bitmapData, checkRect, point);
 					if (!BitmapDataUtil.isEmptyImage(checkBmd)) {
 						map[x][y] = 1;
 					}
 				}
 			}
+			checkBmd.dispose();
+			checkRect = null;
+			rect = null;
+			point = null;
 			return map;
 		}
 
